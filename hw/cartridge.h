@@ -37,7 +37,7 @@
 #define CARTRIDGE_ROM_SIZE 0x0148
 
 // $0149	Cart RAM size
-#define CARTRIDGE_RAM_SIZE_LOWER 0x0149
+#define CARTRIDGE_RAM_SIZE 0x0149
 
 // $014A	Destination code
 #define CARTRIDGE_DESTINATION_CODE 0x014a
@@ -54,5 +54,52 @@
 // $014E-$014F	Checksum
 #define CARTRIDGE_CHECKSUM_LOWER 0x014e
 #define CARTRIDGE_CHECKSUM_UPPER 0x014f
+
+// Cartridge types
+#define CARTRIDGE_TYPE_ROM_ONLY                  0x00
+#define CARTRIDGE_TYPE_ROM_MBC1                  0x01
+#define CARTRIDGE_TYPE_ROM_MBC1_RAM              0x02
+#define CARTRIDGE_TYPE_ROM_MBC1_RAM_BATT         0x03
+#define CARTRIDGE_TYPE_ROM_MBC2                  0x05
+#define CARTRIDGE_TYPE_ROM_MBC2_BATT             0x06
+#define CARTRIDGE_TYPE_ROM_RAM                   0x08
+#define CARTRIDGE_TYPE_ROM_RAM_BATT              0x09
+#define CARTRIDGE_TYPE_ROM_MMM01                 0x0B
+#define CARTRIDGE_TYPE_ROM_MMM01_SRAM            0x0C
+#define CARTRIDGE_TYPE_ROM_MMM01_SRAM_BATT       0x0D
+#define CARTRIDGE_TYPE_ROM_MBC3_TIMER_BATT       0x0F
+#define CARTRIDGE_TYPE_ROM_MBC3_TIMER_RAM_BATT   0x10
+#define CARTRIDGE_TYPE_ROM_MBC3                  0x11
+#define CARTRIDGE_TYPE_ROM_MBC3_RAM              0x12
+#define CARTRIDGE_TYPE_ROM_MBC3_RAM_BATT         0x13
+#define CARTRIDGE_TYPE_ROM_MBC5                  0x19
+#define CARTRIDGE_TYPE_ROM_MBC5_RAM              0x1A
+#define CARTRIDGE_TYPE_ROM_MBC5_RAM_BATT         0x1B
+#define CARTRIDGE_TYPE_ROM_MBC5_RUMBLE           0x1C
+#define CARTRIDGE_TYPE_ROM_MBC5_RUMBLE_SRAM      0x1D
+#define CARTRIDGE_TYPE_ROM_MBC5_RUMBLE_SRAM_BATT 0x1E
+#define CARTRIDGE_TYPE_POCKET_CAMERA 			 0x1F
+#define CARTRIDGE_TYPE_BANDAI_TAMA5 			 0xFD
+#define CARTRIDGE_TYPE_HUDSON_HUC_3 			 0xFE
+#define CARTRIDGE_TYPE_HUDSON_HUC_1 			 0xFF
+
+// Cartridge ROM size (in banks)
+#define CARTRIDGE_ROM_SIZE_2_BANKS               0x00
+#define CARTRIDGE_ROM_SIZE_4_BANKS               0x01
+#define CARTRIDGE_ROM_SIZE_8_BANKS               0x02
+#define CARTRIDGE_ROM_SIZE_16_BANKS              0x03
+#define CARTRIDGE_ROM_SIZE_32_BANKS              0x04
+#define CARTRIDGE_ROM_SIZE_64_BANKS              0x05
+#define CARTRIDGE_ROM_SIZE_128_BANKS             0x06
+#define CARTRIDGE_ROM_SIZE_72_BANKS              0x52
+#define CARTRIDGE_ROM_SIZE_80_BANKS              0x53
+#define CARTRIDGE_ROM_SIZE_96_BANKS              0x54
+
+// Cartridge RAM size (in banks)
+#define CARTRIDGE_RAM_SIZE_0_BANKS               0x00
+#define CARTRIDGE_RAM_SIZE_1_BANK_2KB            0x01
+#define CARTRIDGE_RAM_SIZE_1_BANK_8KB            0x02
+#define CARTRIDGE_RAM_SIZE_4_BANKS               0x03
+#define CARTRIDGE_RAM_SIZE_16_BANKS              0x04
 
 #endif
