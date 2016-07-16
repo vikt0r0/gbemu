@@ -31,8 +31,7 @@ int main(int argc, char* argv[]) {
     char ch;
 
     // Read the first bank of the cartridge into memory
-    ubyte_t mem[MEMORY_SIZE];
-    memory_t memory = mem;
+    memory_t memory[MEMORY_SIZE];
 
     for (int i = 0; i < CARTRIDGE_BANK_SIZE; ++i) {
         memory[i] = fgetc(rom_fp);
@@ -41,9 +40,11 @@ int main(int argc, char* argv[]) {
     // Print game title, just to test things
     printf("Game title is: ");
     for (int i = CARTRIDGE_GAME_TITLE_LOWER; i <= CARTRIDGE_GAME_TITLE_UPPER; ++i)
-        printf("%c", memory[i]);
+        printf("%c", memory_read_byte(memory, i));
 
     printf("\n");
+
+    // TODO: Start interpreting, and implement instructions ad-hoc
 
     /*
     while( !feof(rom_fp) ) {

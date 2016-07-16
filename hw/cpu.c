@@ -1,10 +1,23 @@
 #include "cpu.h"
+#include "memory.h"
+#include "../core/types.h"
 
 // TODO: Implement ad-hoc, add CB instructions!
+// Disassembly from http://imrannazar.com/Gameboy-Z80-Opcode-Map
 
-instruction_t instructions[0xff] = {
-	{ "NOP", NULL, 0 },
-	{ "LD BC, 0x%04X", NULL, 2 },
+void nop() {
+	return;
+}
+
+void ld_bc_nn(memory_t *mem, registers_t *regs) {
+	// Get operands, here 8 bytes.
+	regs->BC = memory_read_word(mem, (regs->PC)+1);
+	return;
+}
+
+instruction_t instructions[256] = {
+	{ "NOP", nop, 0 },
+	{ "LD BC, 0x%04X", ld_bc_nn, 2 },
 	{ "LD (BC), A", NULL, 0 },
 	{ "INC BC", NULL, 0 },
 	{ "INC B", NULL, 0 },
