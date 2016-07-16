@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     char ch;
 
     // Read the first bank of the cartridge into memory
-    ubyte_t mem[MEM_SIZE];
+    ubyte_t mem[MEMORY_SIZE];
     memory_t memory = mem;
 
     for (int i = 0; i < CARTRIDGE_BANK_SIZE; ++i) {
