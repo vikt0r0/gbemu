@@ -1,1 +1,1 @@
-gcc main.c -o gbemu && ./gbemu roms/tetris.gb
+gcc main.c hw/cpu.c -o gbemu && ./gbemu roms/wario.gb

@@ -2,6 +2,7 @@
 #define CPU_H
 
 #include "../core/types.h"
+#include "memory.h"
 
 /* TODO: Document */
 
@@ -64,5 +65,11 @@ typedef struct {
     // Program counter
     uword_t PC;
 } registers_t;
+
+typedef struct {
+    char *disassembly;
+    void (*function)(memory_t memory, ubyte_t* operands);
+    ubyte_t operand_length;
+} instruction_t;
 
 #endif
