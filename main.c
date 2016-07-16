@@ -34,8 +34,6 @@ int main(int argc, char* argv[]) {
         mem.memory[i] = fgetc(rom_fp);
     }
 
-    memory_write_word(&mem, CARTRIDGE_GAME_TITLE_LOWER, 0x4841);
-
     // Print game title, just to test things
     printf("Game title is: ");
     for (int i = CARTRIDGE_GAME_TITLE_LOWER; i <= CARTRIDGE_GAME_TITLE_UPPER; i++) {
@@ -60,12 +58,7 @@ int main(int argc, char* argv[]) {
         die("Only supporting cartridges with 2 ROM banks so far");
     else
         printf("2 ROM banks on cartridge.\n");
-
     
-
-
-    // 
-
 
     // TODO: Start interpreting, and implement instructions ad-hoc
 
