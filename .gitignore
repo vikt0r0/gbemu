@@ -1,3 +1,6 @@
+# Pesky OS X metadata files
 .DS_store
 
+# Executable and object files
 gbemu
+*.o
