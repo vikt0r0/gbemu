@@ -4,7 +4,6 @@
 #include "hw/cpu.h"
 #include "hw/cartridge.h"
 #include "hw/memory.h"
-#include "core/bios.h"
 
 #include "core/types.h"
 
@@ -28,38 +27,41 @@ int main(int argc, char* argv[]) {
         die("File does not exist");
 
     // Read the first bank of the cartridge into memory
-    memory_t memory[MEMORY_SIZE];
+    memory_t mem;
+    memory_init(&mem);
 
     for (int i = 0; i < CARTRIDGE_BANK_SIZE; ++i) {
-        memory[i] = fgetc(rom_fp);
+        mem.memory[i] = fgetc(rom_fp);
     }
+
+    memory_write_word(&mem, CARTRIDGE_GAME_TITLE_LOWER, 0x4841);
 
     // Print game title, just to test things
     printf("Game title is: ");
     for (int i = CARTRIDGE_GAME_TITLE_LOWER; i <= CARTRIDGE_GAME_TITLE_UPPER; i++) {
-        uword_t myword = memory_read_word(memory, i);
+        uword_t myword = memory_read_word(&mem, i);
         printf("%c", myword);
     }
     printf("\n");
 
     // Pull up relevant info about the ROM
-    if (0x00 != memory_read_byte(memory, CARTRIDGE_COLOR_COMPATIBILITY_BYTE)) {
+    if (0x00 != memory_read_byte(&mem, CARTRIDGE_COLOR_COMPATIBILITY_BYTE)) {
         die("Color GameBoy ROM detected");
     } else {
         printf("Regular B&W GameBoy ROM detected.\n");
     }
 
-    if (memory_read_byte(memory, CARTRIDGE_RAM_SIZE) != CARTRIDGE_RAM_SIZE_0_BANKS)
+    if (memory_read_byte(&mem, CARTRIDGE_RAM_SIZE) != CARTRIDGE_RAM_SIZE_0_BANKS)
         die("Only supporting cartridges with no ram so far");
     else
         printf("No RAM banks on cartridge.\n");
 
-    if (memory_read_byte(memory, CARTRIDGE_ROM_SIZE) != CARTRIDGE_ROM_SIZE_2_BANKS)
+    if (memory_read_byte(&mem, CARTRIDGE_ROM_SIZE) != CARTRIDGE_ROM_SIZE_2_BANKS)
         die("Only supporting cartridges with 2 ROM banks so far");
     else
         printf("2 ROM banks on cartridge.\n");
 
-        
+    
 
 
     // 

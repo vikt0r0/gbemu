@@ -71,7 +71,13 @@
 #define MEMORY_RESTART_INTERRUPT_UPPER 0x00ff
 #define MEMORY_RESTART_INTERRUPT_LOWER 0x0000
 
-typedef ubyte_t memory_t;
+// The size of the bios
+#define BIOS_SIZE 256
+
+typedef struct {
+	ubyte_t memory[MEMORY_SIZE];
+	ubyte_t is_bios_mapped : 1;
+} memory_t;
 
 // Reading from memory.
 ubyte_t memory_read_byte(memory_t *mem, uword_t addr);
@@ -80,5 +86,7 @@ uword_t memory_read_word(memory_t *mem, uword_t addr);
 // Writing to memory.
 void memory_write_byte(memory_t *mem, uword_t addr, ubyte_t data);
 void memory_write_word(memory_t *mem, uword_t addr, uword_t data);
+
+void memory_init(memory_t *mem);
 
 #endif
