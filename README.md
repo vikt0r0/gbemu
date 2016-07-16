@@ -1,1 +1,1 @@
-# gbemu
+# gbemu- To make, run 'make all'.- To try out the executable with the original Tetris rom, run 'make run'.- To remove object files and executable run 'make clean'.
