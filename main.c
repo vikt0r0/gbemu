@@ -39,8 +39,10 @@ int main(int argc, char* argv[]) {
 
     // Print game title, just to test things
     printf("Game title is: ");
-    for (int i = CARTRIDGE_GAME_TITLE_LOWER; i <= CARTRIDGE_GAME_TITLE_UPPER; ++i)
-        printf("%c", memory_read_byte(memory, i));
+    for (int i = CARTRIDGE_GAME_TITLE_LOWER; i <= CARTRIDGE_GAME_TITLE_UPPER; i++) {
+        uword_t myword = memory_read_word(memory, i);
+        printf("%c", myword);
+    }
 
     printf("\n");
 

@@ -25,8 +25,9 @@ uword_t memory_read_word(memory_t *mem, uword_t addr) {
 	// In case this emulator is to be ported to big-endian
 	// architectures, keep in mind that this probably needs to
 	// bulletproofed...
+	mem += addr;
 	uword_t *mem_word_ptr = (uword_t*) mem;
-	return mem_word_ptr[addr];
+	return *(mem_word_ptr);
 }
 
 // Writing to memory.
@@ -40,7 +41,8 @@ void memory_write_word(memory_t *mem, uword_t addr, uword_t data) {
 	// we dont do things like mem[0xffff] = 0x1234, as this
 	// would cause a segmentation fault. It probably won't
 	// ever happen, but who knows...
-	addr = translate_address_echo(addr);
+	//addr = translate_address_echo(addr);
+	mem += addr;
 	uword_t *mem_word_ptr = (uword_t*) mem;
-	mem_word_ptr[addr] = data;
+	*(mem_word_ptr) = data;
 }
