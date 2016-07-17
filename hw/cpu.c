@@ -287,4 +287,19 @@ instruction_t instructions[256] = {
 	{ "UNUSED", NULL, 0 },
 	{ "CP 0x%02X", NULL, 1 },
 	{ "RST 38", NULL, 0 }    													
-};													
+};		
+
+int interpret_next_instruction(memory_t *mem, registers_t *regs) {
+	// Fetch current instruction
+	instruction_t curr = instructions[mem->memory[regs->PC]];
+
+	// Check if implemented
+	if (curr.function == NULL)
+		return CPU_UNIMPLEMENTED_INSTRUCTION;
+
+	// Execute the instruction
+	curr.function(mem, regs);
+
+	// Update the program counter
+	regs->PC += curr.operand_length;
+}

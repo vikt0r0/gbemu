@@ -4,6 +4,8 @@
 #include "../core/types.h"
 #include "memory.h"
 
+#define CPU_UNIMPLEMENTED_INSTRUCTION 1
+
 /* TODO: Document */
 
 typedef struct {

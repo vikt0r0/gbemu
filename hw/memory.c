@@ -66,6 +66,9 @@ uword_t memory_read_word(memory_t *mem, uword_t addr) {
 
 void memory_write_byte(memory_t *mem, uword_t addr, ubyte_t data) {
 	addr = translate_address_echo(addr);
+	if (mem->is_bios_mapped && addr < MEMORY_CARTRIDGE_HEADER_LOWER) {
+		return;
+	}
 	mem->memory[addr] = data;
 }
 
