@@ -70,7 +70,7 @@ typedef struct {
 
 typedef struct {
     char *disassembly;
-    void (*function)(memory_t *memory, registers_t *registers, ubyte_t op_len);
+    void (*function)(memory_t *memory, registers_t *registers);
     ubyte_t operand_length;
 } instruction_t;
 

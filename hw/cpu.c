@@ -7,23 +7,79 @@
 // TODO: Implement ad-hoc, add CB instructions!
 // Disassembly from http://imrannazar.com/Gameboy-Z80-Opcode-Map
 
-void nop(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
+void nop(memory_t *mem, registers_t *regs) {
 	// Update the program counter
-	regs->PC += 1;
+	regs->PC++;
 	return;
 }
 
-void ld_bc_nn(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
+void ld_bc_nn(memory_t *mem, registers_t *regs) {
 	// Get operands, here 8 bytes.
 	regs->BC = memory_read_word(mem, (regs->PC)+1);
-	regs->PC += operand_length + 1;
+	regs->PC += 3;
 	return;
 }
 
-void ld_sp_nn(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
+void ld_sp_nn(memory_t *mem, registers_t *regs) {
 	// Get operands, here 8 bytes.
 	regs->SP = memory_read_word(mem, (regs->PC)+1);
-	regs->PC += operand_length + 1;
+	regs->PC += 3;
+	return;
+}
+
+void xor_A(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->A;
+	regs->PC++;
+	return;
+}
+
+void xor_B(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->B;
+	regs->PC++;
+	return;
+}
+
+void xor_C(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->C;
+	regs->PC++;
+	return;
+}
+
+void xor_D(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->D;
+	regs->PC++;
+	return;
+}
+
+void xor_E(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->E;
+	regs->PC++;
+	return;
+}
+
+void xor_H(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->H;
+	regs->PC++;
+	return;
+}
+
+void xor_L(memory_t *mem, registers_t *regs) {
+	regs->A ^= regs->L;
+	regs->PC++;
+	return;
+}
+
+void xor_addr_HL(memory_t *mem, registers_t *regs) {
+	ubyte_t op = memory_read_byte(mem, (regs->HL));
+	regs->A ^= op;
+	regs->PC++;
+	return;
+}
+
+void xor_n(memory_t *mem, registers_t *regs) {
+	ubyte_t op = memory_read_byte(mem, (regs->HL));
+	regs->A ^= op;
+	regs->PC++;
 	return;
 }
 
@@ -205,15 +261,15 @@ instruction_t cpu_instructions[256] = {
 	{ "AND H", NULL, 0 },
 	{ "AND L", NULL, 0 },
 	{ "AND (HL)", NULL, 0 },
-	{ "AND A", NULL, 0 },
-	{ "XOR B", NULL, 0 },
-	{ "XOR C", NULL, 0 },
-	{ "XOR D", NULL, 0 },
-	{ "XOR E", NULL, 0 },
-	{ "XOR H", NULL, 0 },
-	{ "XOR L", NULL, 0 },
-	{ "XOR (HL)", NULL, 0 },
-	{ "XOR A", NULL, 0 },
+	{ "AND A", xor_A, 0 },
+	{ "XOR B", xor_B, 0 },
+	{ "XOR C", xor_C, 0 },
+	{ "XOR D", xor_D, 0 },
+	{ "XOR E", xor_E, 0 },
+	{ "XOR H", xor_H, 0 },
+	{ "XOR L", xor_L, 0 },
+	{ "XOR (HL)", xor_addr_HL, 0 },
+	{ "XOR A", xor_A, 0 },
 
 	{ "OR B", NULL, 0 },
 	{ "OR C", NULL, 0 },
@@ -333,7 +389,7 @@ int cpu_interpret_next_instruction(memory_t *mem, registers_t *regs) {
 		return CPU_UNIMPLEMENTED_INSTRUCTION;
 
 	// Execute the instruction
-	curr.function(mem, regs, curr.operand_length);
+	curr.function(mem, regs);
 
 	return 0;
 }
