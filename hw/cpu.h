@@ -70,8 +70,13 @@ typedef struct {
 
 typedef struct {
     char *disassembly;
-    void (*function)(memory_t *memory, registers_t *registers);
+    void (*function)(memory_t *memory, registers_t *registers, ubyte_t op_len);
     ubyte_t operand_length;
 } instruction_t;
+
+int cpu_interpret_next_instruction(memory_t *mem, registers_t *regs);
+
+char* cpu_get_disassembly(memory_t *mem, uword_t addr);
+instruction_t cpu_get_instruction(memory_t *mem, uword_t addr);
 
 #endif

@@ -30,7 +30,13 @@ int main(int argc, char* argv[]) {
     memory_t mem;
     memory_init(&mem);
 
-    for (int i = 0; i < CARTRIDGE_BANK_SIZE; ++i) {
+    // Read bank 0 into memory
+    for (int i = 0; i < MEMORY_CARTRIDGE_ROM_UPPER; ++i) {
+        mem.memory[i] = fgetc(rom_fp);
+    }
+
+    // Read bank 1 into memory
+    for (int i = MEMORY_CARTRIDGE_ROM_SWITCHABLE_LOWER; i < MEMORY_CARTRIDGE_ROM_SWITCHABLE_UPPER; ++i) {
         mem.memory[i] = fgetc(rom_fp);
     }
 
@@ -49,27 +55,24 @@ int main(int argc, char* argv[]) {
         printf("Regular B&W GameBoy ROM detected.\n");
     }
 
-    if (memory_read_byte(&mem, CARTRIDGE_RAM_SIZE) != CARTRIDGE_RAM_SIZE_0_BANKS)
-        die("Only supporting cartridges with no ram so far");
-    else
-        printf("No RAM banks on cartridge.\n");
-
-    if (memory_read_byte(&mem, CARTRIDGE_ROM_SIZE) != CARTRIDGE_ROM_SIZE_2_BANKS)
-        die("Only supporting cartridges with 2 ROM banks so far");
-    else
-        printf("2 ROM banks on cartridge.\n");
-    
-
-    // TODO: Start interpreting, and implement instructions ad-hoc
-
-    /*
-    while( !feof(rom_fp) ) {
-      rom_data++ = fgetc(rom_fp);
-    }
-    rom_data = EOF;
-    */
-
     fclose(rom_fp);
     
+    // Initialize registers
+    registers_t regs;
+
+    // Begin interpreting
+    while (1) {
+        if (cpu_interpret_next_instruction(&mem, &regs) == CPU_UNIMPLEMENTED_INSTRUCTION) {
+            instruction_t curr = cpu_get_instruction(&mem, regs.PC);
+            printf(
+                "Unimplemented instruction at 0x%04X, opcode 0x%02X, disassembly \"%s\"\n",
+                regs.PC,
+                memory_read_byte(&mem, regs.PC),
+                cpu_get_disassembly(&mem, regs.PC)
+            );
+            exit(EXIT_FAILURE);
+        }
+    }
+
     return 0;
 } 

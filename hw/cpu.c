@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "cpu.h"
 #include "memory.h"
 #include "../core/types.h"
@@ -5,17 +7,27 @@
 // TODO: Implement ad-hoc, add CB instructions!
 // Disassembly from http://imrannazar.com/Gameboy-Z80-Opcode-Map
 
-void nop() {
+void nop(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
+	// Update the program counter
+	regs->PC += 1;
 	return;
 }
 
-void ld_bc_nn(memory_t *mem, registers_t *regs) {
+void ld_bc_nn(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
 	// Get operands, here 8 bytes.
 	regs->BC = memory_read_word(mem, (regs->PC)+1);
+	regs->PC += operand_length + 1;
 	return;
 }
 
-instruction_t instructions[256] = {
+void ld_sp_nn(memory_t *mem, registers_t *regs, ubyte_t operand_length) {
+	// Get operands, here 8 bytes.
+	regs->SP = memory_read_word(mem, (regs->PC)+1);
+	regs->PC += operand_length + 1;
+	return;
+}
+
+instruction_t cpu_instructions[256] = {
 	{ "NOP", nop, 0 },
 	{ "LD BC, 0x%04X", ld_bc_nn, 2 },
 	{ "LD (BC), A", NULL, 0 },
@@ -68,7 +80,7 @@ instruction_t instructions[256] = {
 	{ "CPL", NULL, 0 },
 
 	{ "JR NC, 0x%02X", NULL, 1 },
-	{ "LD SP, 0x%04X", NULL, 2 },
+	{ "LD SP, 0x%04X", ld_sp_nn, 2 },
 	{ "LDD (HL), A", NULL, 0 },
 	{ "INC SP", NULL, 0 },
 	{ "INC (HL)", NULL, 0 },
@@ -287,19 +299,41 @@ instruction_t instructions[256] = {
 	{ "UNUSED", NULL, 0 },
 	{ "CP 0x%02X", NULL, 1 },
 	{ "RST 38", NULL, 0 }    													
-};		
+};
 
-int interpret_next_instruction(memory_t *mem, registers_t *regs) {
+instruction_t cpu_get_instruction(memory_t *mem, uword_t addr) {
+	return cpu_instructions[memory_read_byte(mem, addr)];
+}
+
+char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
+	instruction_t instruction = cpu_get_instruction(mem, addr);
+	char *disassembly;
+
+	// Create the disassembly
+	switch (instruction.operand_length) {
+		case 0:
+			asprintf(&disassembly, instruction.disassembly);
+			break;
+		case 1:
+			asprintf(&disassembly, instruction.disassembly, memory_read_byte(mem, addr+1));
+			break;
+		case 2:
+			asprintf(&disassembly, instruction.disassembly, memory_read_word(mem, addr+1));
+	}
+
+	return disassembly;
+}
+
+int cpu_interpret_next_instruction(memory_t *mem, registers_t *regs) {
 	// Fetch current instruction
-	instruction_t curr = instructions[mem->memory[regs->PC]];
+	instruction_t curr = cpu_get_instruction(mem, regs->PC);
 
 	// Check if implemented
 	if (curr.function == NULL)
 		return CPU_UNIMPLEMENTED_INSTRUCTION;
 
 	// Execute the instruction
-	curr.function(mem, regs);
+	curr.function(mem, regs, curr.operand_length);
 
-	// Update the program counter
-	regs->PC += curr.operand_length;
+	return 0;
 }

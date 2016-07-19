@@ -91,6 +91,7 @@
 #define CARTRIDGE_ROM_SIZE_32_BANKS              0x04
 #define CARTRIDGE_ROM_SIZE_64_BANKS              0x05
 #define CARTRIDGE_ROM_SIZE_128_BANKS             0x06
+#define CARTRIDGE_ROM_SIZE_256_BANKS             0x06
 #define CARTRIDGE_ROM_SIZE_72_BANKS              0x52
 #define CARTRIDGE_ROM_SIZE_80_BANKS              0x53
 #define CARTRIDGE_ROM_SIZE_96_BANKS              0x54
