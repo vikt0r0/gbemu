@@ -389,7 +389,7 @@ char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
 	// Create the disassembly
 	switch (instruction.operand_length) {
 		case 0:
-			asprintf(&disassembly, instruction.disassembly);
+			asprintf(&disassembly, instruction.disassembly, NULL);
 			break;
 		case 1:
 			asprintf(&disassembly, instruction.disassembly, memory_read_byte(mem, addr+1));

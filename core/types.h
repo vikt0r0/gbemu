@@ -1,7 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
 /* Ensure that we use 8 and 16-bits, respectively! */
 
