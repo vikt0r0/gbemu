@@ -63,7 +63,6 @@ int main(int argc, char* argv[]) {
     // Begin interpreting
     while (1) {
         if (cpu_interpret_next_instruction(&mem, &regs) == CPU_UNIMPLEMENTED_INSTRUCTION) {
-            instruction_t curr = cpu_get_instruction(&mem, regs.PC);
             printf(
                 "Unimplemented instruction at 0x%04X, opcode 0x%02X, disassembly \"%s\"\n",
                 regs.PC,

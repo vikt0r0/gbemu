@@ -27,6 +27,13 @@ void ld_sp_nn(memory_t *mem, registers_t *regs) {
 	return;
 }
 
+void ld_hl_nn(memory_t *mem, registers_t *regs) {
+	// Get operands, here 8 bytes.
+	regs->HL = memory_read_word(mem, (regs->PC)+1);
+	regs->PC += 3;
+	return;
+}
+
 void xor_A(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->A;
 	regs->PC++;
@@ -119,7 +126,7 @@ instruction_t cpu_instructions[256] = {
 	{ "RR A", NULL, 0 },
 
 	{ "JR NZ, 0x%02X", NULL, 1 },
-	{ "LD HL, 0x%04X", NULL, 2 },
+	{ "LD HL, 0x%04X", ld_hl_nn, 2 },
 	{ "LDI (HL), A", NULL, 0 },
 	{ "INC HL", NULL, 0 },
 	{ "INC H", NULL, 0 },
@@ -368,7 +375,7 @@ char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
 	// Create the disassembly
 	switch (instruction.operand_length) {
 		case 0:
-			asprintf(&disassembly, instruction.disassembly);
+			asprintf(&disassembly, instruction.disassembly, NULL);
 			break;
 		case 1:
 			asprintf(&disassembly, instruction.disassembly, memory_read_byte(mem, addr+1));
