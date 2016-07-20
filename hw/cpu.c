@@ -27,49 +27,56 @@ void ld_sp_nn(memory_t *mem, registers_t *regs) {
 	return;
 }
 
-void xor_A(memory_t *mem, registers_t *regs) {
+void ld_hl_nn(memory_t *mem, registers_t *regs) {
+	// Get operands, here 8 bytes.
+	regs->HL = memory_read_word(mem, (regs->PC)+1);
+	regs->PC += 3;
+	return;
+}
+
+void xor_a(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->A;
 	regs->PC++;
 	return;
 }
 
-void xor_B(memory_t *mem, registers_t *regs) {
+void xor_b(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->B;
 	regs->PC++;
 	return;
 }
 
-void xor_C(memory_t *mem, registers_t *regs) {
+void xor_c(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->C;
 	regs->PC++;
 	return;
 }
 
-void xor_D(memory_t *mem, registers_t *regs) {
+void xor_d(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->D;
 	regs->PC++;
 	return;
 }
 
-void xor_E(memory_t *mem, registers_t *regs) {
+void xor_e(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->E;
 	regs->PC++;
 	return;
 }
 
-void xor_H(memory_t *mem, registers_t *regs) {
+void xor_h(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->H;
 	regs->PC++;
 	return;
 }
 
-void xor_L(memory_t *mem, registers_t *regs) {
+void xor_l(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->L;
 	regs->PC++;
 	return;
 }
 
-void xor_addr_HL(memory_t *mem, registers_t *regs) {
+void xor_addr_hl(memory_t *mem, registers_t *regs) {
 	ubyte_t op = memory_read_byte(mem, (regs->HL));
 	regs->A ^= op;
 	regs->PC++;
@@ -81,6 +88,20 @@ void xor_n(memory_t *mem, registers_t *regs) {
 	regs->A ^= op;
 	regs->PC++;
 	return;
+}
+
+void ld_addr_hl_a(memory_t *mem, registers_t *regs) {
+	// Write contents of a to (HL)
+	memory_write_word(mem, regs->HL, regs->A);
+	// Decrement HL
+	regs->HL--;
+	regs->PC++;
+	return;
+}
+
+// Interpret an extended instruction
+void extended_instruction(memory_t *mem, registers_t *regs) {
+	
 }
 
 instruction_t cpu_instructions[256] = {
@@ -119,7 +140,7 @@ instruction_t cpu_instructions[256] = {
 	{ "RR A", NULL, 0 },
 
 	{ "JR NZ, 0x%02X", NULL, 1 },
-	{ "LD HL, 0x%04X", NULL, 2 },
+	{ "LD HL, 0x%04X", ld_hl_nn, 2 },
 	{ "LDI (HL), A", NULL, 0 },
 	{ "INC HL", NULL, 0 },
 	{ "INC H", NULL, 0 },
@@ -137,7 +158,7 @@ instruction_t cpu_instructions[256] = {
 
 	{ "JR NC, 0x%02X", NULL, 1 },
 	{ "LD SP, 0x%04X", ld_sp_nn, 2 },
-	{ "LDD (HL), A", NULL, 0 },
+	{ "LDD (HL), A", ld_addr_hl_a, 0 },
 	{ "INC SP", NULL, 0 },
 	{ "INC (HL)", NULL, 0 },
 	{ "DEC (HL)", NULL, 0 },
@@ -261,15 +282,15 @@ instruction_t cpu_instructions[256] = {
 	{ "AND H", NULL, 0 },
 	{ "AND L", NULL, 0 },
 	{ "AND (HL)", NULL, 0 },
-	{ "AND A", xor_A, 0 },
-	{ "XOR B", xor_B, 0 },
-	{ "XOR C", xor_C, 0 },
-	{ "XOR D", xor_D, 0 },
-	{ "XOR E", xor_E, 0 },
-	{ "XOR H", xor_H, 0 },
-	{ "XOR L", xor_L, 0 },
-	{ "XOR (HL)", xor_addr_HL, 0 },
-	{ "XOR A", xor_A, 0 },
+	{ "AND A", xor_a, 0 },
+	{ "XOR B", xor_b, 0 },
+	{ "XOR C", xor_c, 0 },
+	{ "XOR D", xor_d, 0 },
+	{ "XOR E", xor_e, 0 },
+	{ "XOR H", xor_h, 0 },
+	{ "XOR L", xor_l, 0 },
+	{ "XOR (HL)", xor_addr_hl, 0 },
+	{ "XOR A", xor_a, 0 },
 
 	{ "OR B", NULL, 0 },
 	{ "OR C", NULL, 0 },
