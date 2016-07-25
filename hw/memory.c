@@ -80,7 +80,6 @@ void memory_write_word(memory_t *mem, uword_t addr, uword_t data) {
 	//addr = translate_address_echo(addr);
 	ubyte_t a = data; // a = A
 	ubyte_t b = data >> (sizeof(uword_t) / 2) * 8; // b = H
-	printf("   %c\n", b);
 	memory_write_byte(mem, addr, b);
 	memory_write_byte(mem, addr+1, a);
 }

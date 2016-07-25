@@ -5,6 +5,7 @@
 #include "memory.h"
 
 #define CPU_UNIMPLEMENTED_INSTRUCTION 1
+#define CPU_EXTENDED_OPCODE 0xCB
 
 /* TODO: Document */
 

@@ -10,84 +10,71 @@
 void nop(memory_t *mem, registers_t *regs) {
 	// Update the program counter
 	regs->PC++;
-	return;
 }
 
 void ld_bc_nn(memory_t *mem, registers_t *regs) {
 	// Get operands, here 8 bytes.
 	regs->BC = memory_read_word(mem, (regs->PC)+1);
 	regs->PC += 3;
-	return;
 }
 
 void ld_sp_nn(memory_t *mem, registers_t *regs) {
 	// Get operands, here 8 bytes.
 	regs->SP = memory_read_word(mem, (regs->PC)+1);
 	regs->PC += 3;
-	return;
 }
 
 void ld_hl_nn(memory_t *mem, registers_t *regs) {
 	// Get operands, here 8 bytes.
 	regs->HL = memory_read_word(mem, (regs->PC)+1);
 	regs->PC += 3;
-	return;
 }
 
 void xor_a(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->A;
 	regs->PC++;
-	return;
 }
 
 void xor_b(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->B;
 	regs->PC++;
-	return;
 }
 
 void xor_c(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->C;
 	regs->PC++;
-	return;
 }
 
 void xor_d(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->D;
 	regs->PC++;
-	return;
 }
 
 void xor_e(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->E;
 	regs->PC++;
-	return;
 }
 
 void xor_h(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->H;
 	regs->PC++;
-	return;
 }
 
 void xor_l(memory_t *mem, registers_t *regs) {
 	regs->A ^= regs->L;
 	regs->PC++;
-	return;
 }
 
 void xor_addr_hl(memory_t *mem, registers_t *regs) {
 	ubyte_t op = memory_read_byte(mem, (regs->HL));
 	regs->A ^= op;
 	regs->PC++;
-	return;
 }
 
 void xor_n(memory_t *mem, registers_t *regs) {
 	ubyte_t op = memory_read_byte(mem, (regs->HL));
 	regs->A ^= op;
 	regs->PC++;
-	return;
 }
 
 void ld_addr_hl_a(memory_t *mem, registers_t *regs) {
@@ -96,12 +83,6 @@ void ld_addr_hl_a(memory_t *mem, registers_t *regs) {
 	// Decrement HL
 	regs->HL--;
 	regs->PC++;
-	return;
-}
-
-// Interpret an extended instruction
-void extended_instruction(memory_t *mem, registers_t *regs) {
-	
 }
 
 instruction_t cpu_instructions[256] = {
@@ -378,12 +359,297 @@ instruction_t cpu_instructions[256] = {
 	{ "RST 38", NULL, 0 }    													
 };
 
+instruction_t cpu_extended_instructions[256] = {
+	{ "RLC B", NULL, 0 },
+	{ "RLC C", NULL, 0 },
+	{ "RLC D", NULL, 0 },
+	{ "RLC E", NULL, 0 },
+	{ "RLC H", NULL, 0 },
+	{ "RLC L", NULL, 0 },
+	{ "RLC (HL)", NULL, 0 },
+	{ "RLC A", NULL, 0 },
+	{ "RRC B", NULL, 0 },
+	{ "RRC C", NULL, 0 },
+	{ "RRC D", NULL, 0 },
+	{ "RRC E", NULL, 0 },
+	{ "RRC H", NULL, 0 },
+	{ "RRC L", NULL, 0 },
+	{ "RRC (HL)", NULL, 0 },
+	{ "RRC A", NULL, 0 },
+
+	{ "RL B", NULL, 0 },
+	{ "RL C", NULL, 0 },
+	{ "RL D", NULL, 0 },
+	{ "RL E", NULL, 0 },
+	{ "RL H", NULL, 0 },
+	{ "RL L", NULL, 0 },
+	{ "RL (HL)", NULL, 0 },
+	{ "RL A", NULL, 0 },
+	{ "RR B", NULL, 0 },
+	{ "RR C", NULL, 0 },
+	{ "RR D", NULL, 0 },
+	{ "RR E", NULL, 0 },
+	{ "RR H", NULL, 0 },
+	{ "RR L", NULL, 0 },
+	{ "RR (HL)", NULL, 0 },
+	{ "RR A", NULL, 0 },
+
+	{ "SLA B", NULL, 0 },
+	{ "SLA C", NULL, 0 },
+	{ "SLA D", NULL, 0 },
+	{ "SLA E", NULL, 0 },
+	{ "SLA H", NULL, 0 },
+	{ "SLA L", NULL, 0 },
+	{ "SLA (HL)", NULL, 0 },
+	{ "SLA A", NULL, 0 },
+	{ "SRA B", NULL, 0 },
+	{ "SRA C", NULL, 0 },
+	{ "SRA D", NULL, 0 },
+	{ "SRA E", NULL, 0 },
+	{ "SRA H", NULL, 0 },
+	{ "SRA L", NULL, 0 },
+	{ "SRA (HL)", NULL, 0 },
+	{ "SRA A", NULL, 0 },
+
+	{ "SWAP B", NULL, 0 },
+	{ "SWAP C", NULL, 0 },
+	{ "SWAP D", NULL, 0 },
+	{ "SWAP E", NULL, 0 },
+	{ "SWAP H", NULL, 0 },
+	{ "SWAP L", NULL, 0 },
+	{ "SWAP (HL)", NULL, 0 },
+	{ "SWAP A", NULL, 0 },
+	{ "SRL B", NULL, 0 },
+	{ "SRL C", NULL, 0 },
+	{ "SRL D", NULL, 0 },
+	{ "SRL E", NULL, 0 },
+	{ "SRL H", NULL, 0 },
+	{ "SRL L", NULL, 0 },
+	{ "SRL (HL)", NULL, 0 },
+	{ "SRL A", NULL, 0 },
+
+	{ "BIT 0,B", NULL, 0 },
+	{ "BIT 0,C", NULL, 0 },
+	{ "BIT 0,D", NULL, 0 },
+	{ "BIT 0,E", NULL, 0 },
+	{ "BIT 0,H", NULL, 0 },
+	{ "BIT 0,L", NULL, 0 },
+	{ "BIT 0,(HL)", NULL, 0 },
+	{ "BIT 0,A", NULL, 0 },
+	{ "BIT 1,B", NULL, 0 },
+	{ "BIT 1,C", NULL, 0 },
+	{ "BIT 1,D", NULL, 0 },
+	{ "BIT 1,E", NULL, 0 },
+	{ "BIT 1,H", NULL, 0 },
+	{ "BIT 1,L", NULL, 0 },
+	{ "BIT 1,(HL)", NULL, 0 },
+	{ "BIT 1,A", NULL, 0 },
+
+	{ "BIT 2,B", NULL, 0 },
+	{ "BIT 2,C", NULL, 0 },
+	{ "BIT 2,D", NULL, 0 },
+	{ "BIT 2,E", NULL, 0 },
+	{ "BIT 2,H", NULL, 0 },
+	{ "BIT 2,L", NULL, 0 },
+	{ "BIT 2,(HL)", NULL, 0 },
+	{ "BIT 2,A", NULL, 0 },
+	{ "BIT 3,B", NULL, 0 },
+	{ "BIT 3,C", NULL, 0 },
+	{ "BIT 3,D", NULL, 0 },
+	{ "BIT 3,E", NULL, 0 },
+	{ "BIT 3,H", NULL, 0 },
+	{ "BIT 3,L", NULL, 0 },
+	{ "BIT 3,(HL)", NULL, 0 },
+	{ "BIT 3,A", NULL, 0 },
+
+	{ "BIT 4,B", NULL, 0 },
+	{ "BIT 4,C", NULL, 0 },
+	{ "BIT 4,D", NULL, 0 },
+	{ "BIT 4,E", NULL, 0 },
+	{ "BIT 4,H", NULL, 0 },
+	{ "BIT 4,L", NULL, 0 },
+	{ "BIT 4,(HL)", NULL, 0 },
+	{ "BIT 4,A", NULL, 0 },
+	{ "BIT 5,B", NULL, 0 },
+	{ "BIT 5,C", NULL, 0 },
+	{ "BIT 5,D", NULL, 0 },
+	{ "BIT 5,E", NULL, 0 },
+	{ "BIT 5,H", NULL, 0 },
+	{ "BIT 5,L", NULL, 0 },
+	{ "BIT 5,(HL)", NULL, 0 },
+	{ "BIT 5,A", NULL, 0 },
+
+	{ "BIT 6,B", NULL, 0 },
+	{ "BIT 6,C", NULL, 0 },
+	{ "BIT 6,D", NULL, 0 },
+	{ "BIT 6,E", NULL, 0 },
+	{ "BIT 6,H", NULL, 0 },
+	{ "BIT 6,L", NULL, 0 },
+	{ "BIT 6,(HL)", NULL, 0 },
+	{ "BIT 6,A", NULL, 0 },
+	{ "BIT 7,B", NULL, 0 },
+	{ "BIT 7,C", NULL, 0 },
+	{ "BIT 7,D", NULL, 0 },
+	{ "BIT 7,E", NULL, 0 },
+	{ "BIT 7,H", NULL, 0 },
+	{ "BIT 7,L", NULL, 0 },
+	{ "BIT 7,(HL)", NULL, 0 },
+	{ "BIT 7,A", NULL, 0 },
+
+	{ "RES 0,B", NULL, 0 },
+	{ "RES 0,C", NULL, 0 },
+	{ "RES 0,D", NULL, 0 },
+	{ "RES 0,E", NULL, 0 },
+	{ "RES 0,H", NULL, 0 },
+	{ "RES 0,L", NULL, 0 },
+	{ "RES 0,(HL)", NULL, 0 },
+	{ "RES 0,A", NULL, 0 },
+	{ "RES 1,B", NULL, 0 },
+	{ "RES 1,C", NULL, 0 },
+	{ "RES 1,D", NULL, 0 },
+	{ "RES 1,E", NULL, 0 },
+	{ "RES 1,H", NULL, 0 },
+	{ "RES 1,L", NULL, 0 },
+	{ "RES 1,(HL)", NULL, 0 },
+	{ "RES 1,A", NULL, 0 },
+
+	{ "RES 2,B", NULL, 0 },
+	{ "RES 2,C", NULL, 0 },
+	{ "RES 2,D", NULL, 0 },
+	{ "RES 2,E", NULL, 0 },
+	{ "RES 2,H", NULL, 0 },
+	{ "RES 2,L", NULL, 0 },
+	{ "RES 2,(HL)", NULL, 0 },
+	{ "RES 2,A", NULL, 0 },
+	{ "RES 3,B", NULL, 0 },
+	{ "RES 3,C", NULL, 0 },
+	{ "RES 3,D", NULL, 0 },
+	{ "RES 3,E", NULL, 0 },
+	{ "RES 3,H", NULL, 0 },
+	{ "RES 3,L", NULL, 0 },
+	{ "RES 3,(HL)", NULL, 0 },
+	{ "RES 3,A", NULL, 0 },
+
+	{ "RES 4,B", NULL, 0 },
+	{ "RES 4,C", NULL, 0 },
+	{ "RES 4,D", NULL, 0 },
+	{ "RES 4,E", NULL, 0 },
+	{ "RES 4,H", NULL, 0 },
+	{ "RES 4,L", NULL, 0 },
+	{ "RES 4,(HL)", NULL, 0 },
+	{ "RES 4,A", NULL, 0 },
+	{ "RES 5,B", NULL, 0 },
+	{ "RES 5,C", NULL, 0 },
+	{ "RES 5,D", NULL, 0 },
+	{ "RES 5,E", NULL, 0 },
+	{ "RES 5,H", NULL, 0 },
+	{ "RES 5,L", NULL, 0 },
+	{ "RES 5,(HL)", NULL, 0 },
+	{ "RES 5,A", NULL, 0 },
+
+	{ "RES 6,B", NULL, 0 },
+	{ "RES 6,C", NULL, 0 },
+	{ "RES 6,D", NULL, 0 },
+	{ "RES 6,E", NULL, 0 },
+	{ "RES 6,H", NULL, 0 },
+	{ "RES 6,L", NULL, 0 },
+	{ "RES 6,(HL)", NULL, 0 },
+	{ "RES 6,A", NULL, 0 },
+	{ "RES 7,B", NULL, 0 },
+	{ "RES 7,C", NULL, 0 },
+	{ "RES 7,D", NULL, 0 },
+	{ "RES 7,E", NULL, 0 },
+	{ "RES 7,H", NULL, 0 },
+	{ "RES 7,L", NULL, 0 },
+	{ "RES 7,(HL)", NULL, 0 },
+	{ "RES 7,A", NULL, 0 },
+
+	{ "SET 0,B", NULL, 0 },
+	{ "SET 0,C", NULL, 0 },
+	{ "SET 0,D", NULL, 0 },
+	{ "SET 0,E", NULL, 0 },
+	{ "SET 0,H", NULL, 0 },
+	{ "SET 0,L", NULL, 0 },
+	{ "SET 0,(HL)", NULL, 0 },
+	{ "SET 0,A", NULL, 0 },
+	{ "SET 1,B", NULL, 0 },
+	{ "SET 1,C", NULL, 0 },
+	{ "SET 1,D", NULL, 0 },
+	{ "SET 1,E", NULL, 0 },
+	{ "SET 1,H", NULL, 0 },
+	{ "SET 1,L", NULL, 0 },
+	{ "SET 1,(HL)", NULL, 0 },
+	{ "SET 1,A", NULL, 0 },
+
+	{ "SET 2,B", NULL, 0 },
+	{ "SET 2,C", NULL, 0 },
+	{ "SET 2,D", NULL, 0 },
+	{ "SET 2,E", NULL, 0 },
+	{ "SET 2,H", NULL, 0 },
+	{ "SET 2,L", NULL, 0 },
+	{ "SET 2,(HL)", NULL, 0 },
+	{ "SET 2,A", NULL, 0 },
+	{ "SET 3,B", NULL, 0 },
+	{ "SET 3,C", NULL, 0 },
+	{ "SET 3,D", NULL, 0 },
+	{ "SET 3,E", NULL, 0 },
+	{ "SET 3,H", NULL, 0 },
+	{ "SET 3,L", NULL, 0 },
+	{ "SET 3,(HL)", NULL, 0 },
+	{ "SET 3,A", NULL, 0 },
+
+	{ "SET 4,B", NULL, 0 },
+	{ "SET 4,C", NULL, 0 },
+	{ "SET 4,D", NULL, 0 },
+	{ "SET 4,E", NULL, 0 },
+	{ "SET 4,H", NULL, 0 },
+	{ "SET 4,L", NULL, 0 },
+	{ "SET 4,(HL)", NULL, 0 },
+	{ "SET 4,A", NULL, 0 },
+	{ "SET 5,B", NULL, 0 },
+	{ "SET 5,C", NULL, 0 },
+	{ "SET 5,D", NULL, 0 },
+	{ "SET 5,E", NULL, 0 },
+	{ "SET 5,H", NULL, 0 },
+	{ "SET 5,L", NULL, 0 },
+	{ "SET 5,(HL)", NULL, 0 },
+	{ "SET 5,A", NULL, 0 },
+
+	{ "SET 6,B", NULL, 0 },
+	{ "SET 6,C", NULL, 0 },
+	{ "SET 6,D", NULL, 0 },
+	{ "SET 6,E", NULL, 0 },
+	{ "SET 6,H", NULL, 0 },
+	{ "SET 6,L", NULL, 0 },
+	{ "SET 6,(HL)", NULL, 0 },
+	{ "SET 6,A", NULL, 0 },
+	{ "SET 7,B", NULL, 0 },
+	{ "SET 7,C", NULL, 0 },
+	{ "SET 7,D", NULL, 0 },
+	{ "SET 7,E", NULL, 0 },
+	{ "SET 7,H", NULL, 0 },
+	{ "SET 7,L", NULL, 0 },
+	{ "SET 7,(HL)", NULL, 0 },
+	{ "SET 7,A", NULL, 0 }
+};
+
 instruction_t cpu_get_instruction(memory_t *mem, uword_t addr) {
 	return cpu_instructions[memory_read_byte(mem, addr)];
 }
 
+instruction_t cpu_get_extended_instruction(memory_t *mem, uword_t addr) {
+	return cpu_extended_instructions[memory_read_byte(mem, addr+1)];
+}
+
 char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
-	instruction_t instruction = cpu_get_instruction(mem, addr);
+
+	instruction_t instruction;
+
+    if (memory_read_byte(mem, addr) == CPU_EXTENDED_OPCODE)
+    	instruction = cpu_get_extended_instruction(mem, addr);
+    else
+    	instruction = cpu_get_instruction(mem, addr);
+    
 	char *disassembly;
 
 	// Create the disassembly
@@ -402,8 +668,14 @@ char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
 }
 
 int cpu_interpret_next_instruction(memory_t *mem, registers_t *regs) {
+	// Current instruction to interpret
+	instruction_t curr;
+
 	// Fetch current instruction
-	instruction_t curr = cpu_get_instruction(mem, regs->PC);
+	if (memory_read_byte(mem, regs->PC) == CPU_EXTENDED_OPCODE)
+		curr = cpu_get_extended_instruction(mem, regs->PC);
+	else
+		curr = cpu_get_instruction(mem, regs->PC);
 
 	// Check if implemented
 	if (curr.function == NULL)
