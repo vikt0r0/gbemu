@@ -359,6 +359,206 @@ instruction_t cpu_instructions[256] = {
 	{ "RST 38", NULL, 0 }    													
 };
 
+void bit_n_r(registers_t *regs, ubyte_t n, ubyte_t *r) {
+	ubyte_t mask = 1 << n;
+	regs->flags.Z = (mask & *r) ? 0 : 1;
+	regs->flags.H = 1;
+	regs->flags.N = 0;
+	regs->PC += 2;
+}
+
+void bit_7_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->H));
+}
+
+void bit_6_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->H));
+}
+
+void bit_5_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->H));
+}
+
+void bit_4_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->H));
+}
+
+void bit_3_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->H));
+}
+
+void bit_2_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->H));
+}
+
+void bit_1_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->H));
+}
+
+void bit_0_h(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->H));
+}
+
+void bit_7_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->B));
+}
+
+void bit_6_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->B));
+}
+
+void bit_5_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->B));
+}
+
+void bit_4_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->B));
+}
+
+void bit_3_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->B));
+}
+
+void bit_2_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->B));
+}
+
+void bit_1_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->B));
+}
+
+void bit_0_b(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->B));
+}
+
+void bit_7_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->C));
+}
+
+void bit_6_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->C));
+}
+
+void bit_5_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->C));
+}
+
+void bit_4_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->C));
+}
+
+void bit_3_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->C));
+}
+
+void bit_2_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->C));
+}
+
+void bit_1_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->C));
+}
+
+void bit_0_c(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->C));
+}
+
+void bit_7_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->D));
+}
+
+void bit_6_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->D));
+}
+
+void bit_5_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->D));
+}
+
+void bit_4_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->D));
+}
+
+void bit_3_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->D));
+}
+
+void bit_2_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->D));
+}
+
+void bit_1_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->D));
+}
+
+void bit_0_d(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->D));
+}
+
+void bit_7_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->E));
+}
+
+void bit_6_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->E));
+}
+
+void bit_5_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->E));
+}
+
+void bit_4_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->E));
+}
+
+void bit_3_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->E));
+}
+
+void bit_2_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->E));
+}
+
+void bit_1_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->E));
+}
+
+void bit_0_e(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->E));
+}
+
+void bit_7_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 7, &(regs->L));
+}
+
+void bit_6_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 6, &(regs->L));
+}
+
+void bit_5_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 5, &(regs->L));
+}
+
+void bit_4_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 4, &(regs->L));
+}
+
+void bit_3_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 3, &(regs->L));
+}
+
+void bit_2_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 2, &(regs->L));
+}
+
+void bit_1_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 1, &(regs->L));
+}
+
+void bit_0_l(memory_t *mem, registers_t *regs) {
+	bit_n_r(regs, 0, &(regs->L));
+}
+
 instruction_t cpu_extended_instructions[256] = {
 	{ "RLC B", NULL, 0 },
 	{ "RLC C", NULL, 0 },
@@ -491,7 +691,7 @@ instruction_t cpu_extended_instructions[256] = {
 	{ "BIT 7,C", NULL, 0 },
 	{ "BIT 7,D", NULL, 0 },
 	{ "BIT 7,E", NULL, 0 },
-	{ "BIT 7,H", NULL, 0 },
+	{ "BIT 7,H", bit_7_h, 0 },
 	{ "BIT 7,L", NULL, 0 },
 	{ "BIT 7,(HL)", NULL, 0 },
 	{ "BIT 7,A", NULL, 0 },
@@ -649,7 +849,7 @@ char* cpu_get_disassembly(memory_t *mem, uword_t addr) {
     	instruction = cpu_get_extended_instruction(mem, addr);
     else
     	instruction = cpu_get_instruction(mem, addr);
-    
+
 	char *disassembly;
 
 	// Create the disassembly
