@@ -85,6 +85,10 @@ void ld_addr_hl_a(memory_t *mem, registers_t *regs) {
 	regs->PC++;
 }
 
+void jr_nz_n(memory_t *mem, registers_t *regs) {
+	regs->PC += (regs->flags.Z) != 0 ? memory_read_byte(mem, regs->PC+1) : 1;
+}
+
 instruction_t cpu_instructions[256] = {
 	{ "NOP", nop, 0 },
 	{ "LD BC, 0x%04X", ld_bc_nn, 2 },
@@ -120,7 +124,7 @@ instruction_t cpu_instructions[256] = {
 	{ "LD E, 0x%02x", NULL, 1 },
 	{ "RR A", NULL, 0 },
 
-	{ "JR NZ, 0x%02X", NULL, 1 },
+	{ "JR NZ, 0x%02X", jr_nz_n, 1 },
 	{ "LD HL, 0x%04X", ld_hl_nn, 2 },
 	{ "LDI (HL), A", NULL, 0 },
 	{ "INC HL", NULL, 0 },
